@@ -10,18 +10,20 @@ class CylinderCover extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'hours',
-        'lmd_status',
-        'location_id',
-        'status'
+        'serial_number',
+        'is_disposed',
+        'disposal_date',
+        'storage',
+        'date_stored',
+        'status',
+        'cycle'
     ];
 
     public function location() {
         return $this->belongsTo(Location::class);
     }
 
-    public function orders() {
-        return $this->hasOne(Order::class);
+    public function order() {
+        return $this->hasMany(Order::class);
     }
 }

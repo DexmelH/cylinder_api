@@ -33,7 +33,7 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         // return $customer;
-        return new CustomerResource($customer->loadMissing('location'));
+        return new CustomerResource($customer);
     }
 
     /**

@@ -18,15 +18,21 @@ class CylinderCoverFactory extends Factory
     public function definition(): array
     {
         $name = "T" . $this->faker->unique->numberBetween(1000, 5000);
-        $status = $this->faker->randomElement(["Operation", "Storage", "Disassembly", "Groove", "Assembly"]);
-        $dateStarted = $status == "Operation" ? $this->faker->dateTimeThisDecade() : NULL;
+        $disposed = $this->faker->numberBetween(0, 1);
+        $disposalDate = $disposed == 1 ? $this->faker->dateTimeThisDecade() : NULL;
+        $storage = $this->faker->randomElement(["KLL", "大前運送", "パーツセンター", NULL]);
+        $storageDate = $storage != NULL ? $this->faker->dateTimeInInterval($disposalDate, "-2 years") : NULL;
+        $status = $storage != NULL ? "Storage" : $this->faker->randomElement(["Disassembly", "Grooving", "LMD", "Finishing", "Assembly", "Operation"]);
+        $cycle = $this->faker->numberBetween(0, 5);
 
         return [
-            "name" => $name,
-            "lmd_status" => $this->faker->numberBetween(0, 1),
-            "location_id" => Location::pluck('id')->random(),
+            "serial_number" => $name,
+            "is_disposed" => $disposed,
+            "disposal_date" => $disposalDate,
+            "storage" => $storage,
+            "date_stored" => $storageDate,
             "status" => $status,
-            "date_started" => $dateStarted
+            "cycle" => $cycle
         ];
     }
 }

@@ -2,13 +2,11 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Date;
 
-class CylinderResource extends JsonResource
+class CylinderForCustomerResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -17,21 +15,17 @@ class CylinderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-
         $dateNow = new Carbon(date('Y-m-d H:i:s'));
         $dateStart = new Carbon($this->date_started);
-        $order = Order::where('cylinder_cover_id', $this->id)->latest()->first();
         $hours = (int) $this->date_started != NULL ? round($dateStart->diffInHours($dateNow)) : 0;
 
         return [
             'id' => $this->id,
-            'serialNumber' => $this->serial_number,
-            'isDisposed' => $this->is_disposed,
-            'disposalDate' => $this->disposal_date,
-            'storage' => $this->storage,
-            'dateStored' => $this->date_stored,
+            'name' => $this->name,
+            'lmdStatus' => $this->lmd_status == 0 ? "Not done" : "Done",
             'status' => $this->status,
-            'cycle' => $this->cycle
+            'hours' => $hours,
+            'updated_at' => $this->updated_at
         ];
     }
 }

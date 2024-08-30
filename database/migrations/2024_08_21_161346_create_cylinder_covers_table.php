@@ -13,11 +13,13 @@ return new class extends Migration
     {
         Schema::create('cylinder_covers', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
-            $table->boolean('lmd_status');
-            $table->integer('location_id');
+            $table->string('serial_number')->unique();
+            $table->boolean('is_disposed');
+            $table->dateTime('disposal_date')->nullable();
+            $table->string('storage')->nullable();
+            $table->dateTime('date_stored')->nullable();
             $table->string('status');
-            $table->dateTime('date_started')->nullable();
+            $table->smallInteger('cycle');
             $table->timestamps();
         });
     }
